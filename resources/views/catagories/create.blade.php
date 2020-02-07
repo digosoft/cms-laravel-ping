@@ -25,7 +25,7 @@
 
                         <div class="form-group">
                             <lable for="exampleFormControlInput1">Catagories Name *</lable>
-                            <input type="text" name="name" class="form-control my-2" name="catagory" placeholder="Catagories Name" id="exampleFormControlInput1" value="{{isset($catagory) ? $catagory->name : ''}}">
+                            <input type="text" name="name" class="form-control my-2" placeholder="Catagories Name" id="exampleFormControlInput1" value="{{isset($catagory) ? $catagory->name : ''}}">
                         </div>
 
                         <div class="form-group">
