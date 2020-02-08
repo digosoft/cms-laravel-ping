@@ -17,11 +17,21 @@
                         <th>Images</th>
                         <th>Title</th>
                     </tr>
-                @foreach($posts as $post)
+                @foreach($posts as $post) 
                     <tr>
                         <td width="30%" class="my-2"><img src="public/storage/{{$post->images}}" width="120px"></td>
                     
                         <td width="70%" class="my-2">{{$post->title}}</td>
+
+                        <td><a href="{{route('post.edit', $post->id)}}" class="btn btn-primary"> Edit</a></td>
+                        <td>
+                            <form action="{{route('post.destroy', $post->id)}}" method="POST">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger"> Trash</button>
+                                
+                            </form>
+                        </td>
                     </tr>
 
                 @endforeach

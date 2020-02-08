@@ -108,6 +108,19 @@
                         
 
                     </ul>
+                </div>
+
+                     <div class="card  my-5" style="width: 18rem;">
+                       <ul class="list-group list-group-flush">
+
+                        <li class="list-group-item">
+                             <a href="{{ route('trash-post.index')}}"> 
+                                 <i class="fa fa-list" aria-hidden="true"></i> Trash Post
+                            </a>
+                        </li>  
+                    </ul>
+
+
                     </div>  
                 </div>
                 @yield('content')

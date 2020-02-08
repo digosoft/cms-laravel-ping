@@ -22,3 +22,5 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::resource('catagories', 'CatagoriesController')->middleware('auth');
 Route::resource('post', 'PostController')->middleware('auth');
 
+Route::get('trash-post', 'PostController@trashPost')->name('trash-post.index');
+
