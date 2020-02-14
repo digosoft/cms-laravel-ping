@@ -20,10 +20,17 @@
 
                     @if(count($catagories) > 0)
 
-                    <table> 
+                    <table width="100%"> 
+                        <tr>
+                            <th>Catagory Name</th>
+                            <th>Catagory Count</th>
+                            <th colspan="3">Catagory Action</th>
+                        </tr>
                     @foreach($catagories as $catagory)
                         <tr>
-                            <td width="100%" class="my-2">{{$catagory->name}}</td>
+                            <td class="my-2">{{$catagory->name}}</td>
+                            <td class="my-2">{{$catagory->posts->count()}}</td>
+
                             <td>
                                 <a href="{{route('catagories.edit', $catagory->id)}}" class="btn btn-info btn-sm float-right">edit</a>
                             </td>

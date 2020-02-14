@@ -23,4 +23,5 @@ Route::resource('catagories', 'CatagoriesController')->middleware('auth');
 Route::resource('post', 'PostController')->middleware('auth');
 
 Route::get('trash-post', 'PostController@trashPost')->name('trash-post.index');
+Route::put('restore-post/{post}', 'PostController@restorePost')->name('restore.post');
 

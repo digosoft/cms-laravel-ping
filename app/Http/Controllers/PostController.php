@@ -4,8 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Requests\Posts\CreatePostRequest;
-use Illuminate\Support\Facades\Storage;
+use App\Http\Requests\Posts\UpdatePostRequest; 
 use App\Post;
+use App\Catagory;
 
 class PostController extends Controller
 {
@@ -26,7 +27,7 @@ class PostController extends Controller
      */
     public function create()
     {
-        return view('post.create');
+        return view('post.create')->with('catagories', catagory::all());
     }
 
     /**
@@ -43,9 +44,10 @@ class PostController extends Controller
         'title' =>$request->title,
         'description'   => $request->description,
         'content'   =>$request->content,
-        'images' => $image,
+        'image' => $image,
         'status' => true,
-        'publish_at' => $request->publish_at
+        'publish_at' => $request->publish_at,
+        'catagory_id' => $request->catagory
       ]);
 
       session()->flash('message', "Post has been create Successfully.");
@@ -69,9 +71,9 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Post $post)
     {
-        //
+        return view('post.create')->withPost($post)->withCatagories(catagory::all());
     }
 
     /**
@@ -81,9 +83,23 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdatePostRequest $request, Post $post)
     {
-        //
+        $data = $request->only(['title', 'description', 'content', 'publish_at']);
+
+        if($request->hasFile('image')) {
+            $image = $request->image->store('posts');
+            // Storage::delete($post->image);
+             $post->deleteImage();
+            $data['image'] = $image;
+            $data['catagory_id'] = $request->catagory;
+
+        }
+
+        $post->update($data); 
+        Session()->flash('message', 'Update Successfully');
+
+        return redirect()->route('post.index');
     }
 
     /**
@@ -98,20 +114,31 @@ class PostController extends Controller
         $post = Post::withTrashed()->where('id', $id)->firstOrFail();
 
         if($post->trashed()) {
-            Storage::delete($post->images);
+            // Storage::delete($post->images);
+            $post->deleteImage();
             $post->forceDelete();
+
         } else {
             $post->delete();   
+             session()->flash('message', 'Trash Successfully');
         }
 
-        session()->flash('message', 'Delete Successfully');
+       
         return redirect(route('post.index'));
     }
 
 
     public function trashPost(){
 
-        $trashed = Post::withTrashed()->whereNotNull('deleted_at')->get(); 
+        $trashed = Post::onlyTrashed()->get(); 
         return view('post.index')->withPosts($trashed);
+    }
+
+    public function restorePost($id){
+        
+        $post = Post::withTrashed()->where('id', $id)->firstOrFail();
+        $post->restore();
+        session()->flash('message', 'Restore Successfully');
+        return redirect()->back();
     }
 }
