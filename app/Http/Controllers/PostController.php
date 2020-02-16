@@ -4,12 +4,18 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Requests\Posts\CreatePostRequest;
-use App\Http\Requests\Posts\UpdatePostRequest; 
+use App\Http\Requests\Posts\UpdatePostRequest;  
 use App\Post;
 use App\Catagory;
 
+
 class PostController extends Controller
 {
+
+    function __construct(){
+
+       $this->middleware('VeryfiCatagoryCount')->only(['create','store','index']);
+    }
     /**
      * Display a listing of the resource.
      *
@@ -17,7 +23,7 @@ class PostController extends Controller
      */
     public function index()
     {
-        return view('post.index')->with('posts', Post::all());
+            return view('post.index')->with('posts', Post::all());
     }
 
     /**
@@ -47,7 +53,7 @@ class PostController extends Controller
         'image' => $image,
         'status' => true,
         'publish_at' => $request->publish_at,
-        'catagory_id' => $request->catagory
+        'catagory_id' => $request->catagory,
       ]);
 
       session()->flash('message', "Post has been create Successfully.");
@@ -91,14 +97,13 @@ class PostController extends Controller
             $image = $request->image->store('posts');
             // Storage::delete($post->image);
              $post->deleteImage();
-            $data['image'] = $image;
-            $data['catagory_id'] = $request->catagory;
-
+            $data['image'] = $image; 
         }
 
+        $data['catagory_id'] = $request->catagory;
+        
         $post->update($data); 
         Session()->flash('message', 'Update Successfully');
-
         return redirect()->route('post.index');
     }
 

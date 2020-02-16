@@ -7,8 +7,10 @@ use App\catagory;
 use App\Http\Requests\Catagories\CreateCatagoryRequest;
 use App\Http\Requests\Catagories\UpdateCatagoryRequest;
 
+
 class CatagoriesController extends Controller
 {
+    
     /**
      * Display a listing of the resource.
      *

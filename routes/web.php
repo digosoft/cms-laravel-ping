@@ -17,11 +17,15 @@ Route::get('/', function () {
 
 
 Auth::routes();
-Route::get('/home', 'HomeController@index')->name('home');
 
-Route::resource('catagories', 'CatagoriesController')->middleware('auth');
-Route::resource('post', 'PostController')->middleware('auth');
+Route::middleware(['auth'])->group(function(){
 
-Route::get('trash-post', 'PostController@trashPost')->name('trash-post.index');
-Route::put('restore-post/{post}', 'PostController@restorePost')->name('restore.post');
+	Route::get('/home', 'HomeController@index')->name('home');
+	Route::resource('catagories', 'CatagoriesController') ;
+	Route::resource('post', 'PostController');
+	Route::get('trash-post', 'PostController@trashPost')->name('trash-post.index');
+	Route::put('restore-post/{post}', 'PostController@restorePost')->name('restore.post');
+	
+});
+
 

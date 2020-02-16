@@ -27,9 +27,11 @@
                         <td width="70%" class="my-2">{{$post->title}}</td>
 
                         <td>
+                             @if(isset($post->catagory->id))
                               <a href="{{route('catagories.edit', $post->catagory->id )}}">
                                   {{$post->catagory->name}}
                               </a>
+                              @endif
                           </td>
 
 
