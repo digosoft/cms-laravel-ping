@@ -19,6 +19,9 @@
     <link href="{{ asset('public/css/app.css') }}" rel="stylesheet">
 
    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+   
+
+
    @yield('css')
 
     
@@ -59,11 +62,19 @@
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="{{ route('user.edit-profile') }}">
+                                        My Profile
+                                    </a>
+
+
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
                                         {{ __('Logout') }}
                                     </a>
+
+                                  
+
 
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                                         @csrf
@@ -78,9 +89,16 @@
 
         <main class="py-4">
         <div class="container">
-            @if(session()->has('message'))
+                  @if(session()->has('message'))
                         <div class="alert alert-success">
                             {{session()->get('message')}}
+                        </div>
+                    @endif
+
+
+                     @if(session()->has('error'))
+                        <div class="alert alert-danger">
+                            {{session()->get('error')}}
                         </div>
                     @endif
             <div class="row justify-content-center"> 
@@ -92,6 +110,15 @@
                     <div class="card" style="width: 18rem;">
                     <ul class="list-group list-group-flush">
 
+
+                        @if(auth()->user()->isAdmin())
+                         <li class="list-group-item">
+                             <a href="{{route('users.index')}}">
+                                  <i class="fa fa-list" aria-hidden="true"></i>Users
+                             </a>
+                         </li>
+
+                        @endif
                         <li class="list-group-item">
                              <a href="{{ route('catagories.index')}}"> 
                                  <i class="fa fa-list" aria-hidden="true"></i>  Catagory
@@ -105,6 +132,13 @@
                             </a> 
                            
                         </li>
+
+
+                           <li class="list-group-item">
+                             <a href="{{ route('tags.index')}}"> 
+                                 <i class="fa fa-list" aria-hidden="true"></i>  Tags
+                            </a>
+                        </li> 
                         
 
                     </ul>

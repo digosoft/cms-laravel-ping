@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Catagories;
 
 use Illuminate\Foundation\Http\FormRequest;
+use App\Http\Controllers\Tags;
 
 class UpdateCatagoryRequest extends FormRequest
 {

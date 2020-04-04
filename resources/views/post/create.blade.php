@@ -71,6 +71,29 @@
                          </div>
 
 
+
+
+ 
+
+
+                         @if($tags->count() > 0 )
+                            <div class="form-group"> 
+                                <label for="tags"> Tags </label><br>
+                                    <select name="tags[]" id="tags" class="form-control tag-selecter" multiple="multiple">
+                                        @foreach($tags as $tag)
+                                            <option value="{{$tag->id}}"
+
+                                                @if(isset($post)) 
+                                                    @if($post->hasTag($tag->id))
+                                                        selected 
+                                                    @endif
+                                                @endif
+                                            >{{$tag->name}}</option>
+                                        @endforeach
+                                    </select>
+                            </div>
+                         @endif
+
                         <div class="form-group">
                             <button type="submit" class="btn btn-primary">Create Post</button>
                         </div>
@@ -86,17 +109,27 @@
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/trix/1.2.1/trix-core.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/trix/1.2.1/trix.js"></script> 
 
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
+
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script type="text/javascript">
         flatpickr("#publish_at", { 
             enableTime: true,
             dateFormat: "Y-m-d H:i",
         });
+
+        $(document).ready(function() {
+            $('.tag-selecter').select2();
+        })
+
+
     </script>
 
 @endsection
 
 @section('css')
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/trix/1.2.1/trix.css">
-     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+          
 @endsection

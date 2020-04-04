@@ -7,14 +7,14 @@ use App\Http\Requests\Posts\CreatePostRequest;
 use App\Http\Requests\Posts\UpdatePostRequest;  
 use App\Post;
 use App\Catagory;
-
+use App\Tag;
 
 class PostController extends Controller
 {
 
     function __construct(){
 
-       $this->middleware('VeryfiCatagoryCount')->only(['create','store','index']);
+       $this->middleware('VeryfiCatagoryCount')->only(['create','store']);
     }
     /**
      * Display a listing of the resource.
@@ -33,7 +33,7 @@ class PostController extends Controller
      */
     public function create()
     {
-        return view('post.create')->with('catagories', catagory::all());
+        return view('post.create')->with('catagories', catagory::all())->with('tags', Tag::all());
     }
 
     /**
@@ -46,7 +46,7 @@ class PostController extends Controller
     {
       $image = $request->image->store('posts');
       
-      post::create([
+      $post = post::create([
         'title' =>$request->title,
         'description'   => $request->description,
         'content'   =>$request->content,
@@ -55,6 +55,10 @@ class PostController extends Controller
         'publish_at' => $request->publish_at,
         'catagory_id' => $request->catagory,
       ]);
+
+      if($request->tags){
+        $post->tags()->attach($request->tags);
+      }
 
       session()->flash('message', "Post has been create Successfully.");
       return redirect()->route('post.index');
@@ -79,7 +83,7 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
-        return view('post.create')->withPost($post)->withCatagories(catagory::all());
+        return view('post.create')->withPost($post)->withCatagories(catagory::all())->with('tags', Tag::all());
     }
 
     /**
@@ -101,6 +105,11 @@ class PostController extends Controller
         }
 
         $data['catagory_id'] = $request->catagory;
+
+
+        if($request->tags){
+            $post->tags()->sync($request->tags);
+        }
         
         $post->update($data); 
         Session()->flash('message', 'Update Successfully');

@@ -1,11 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Catagories;
+namespace App\Http\Requests\Users;
 
 use Illuminate\Foundation\Http\FormRequest;
-use App\Http\Controllers\Tags; 
 
-class CreateCatagoryRequest extends FormRequest
+class UpdateProfileRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -14,7 +13,7 @@ class CreateCatagoryRequest extends FormRequest
      */
     public function authorize()
     {
-        return true; 
+        return true;
     }
 
     /**
@@ -25,7 +24,8 @@ class CreateCatagoryRequest extends FormRequest
     public function rules()
     {
         return [
-          'name'   => 'required'
-      ];
+            'name' => 'required',
+            'about' => 'required', 
+        ];
     }
 }
